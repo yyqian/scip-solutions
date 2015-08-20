@@ -1,0 +1,2 @@
+# scip-solutions
+SCIP Solutions
