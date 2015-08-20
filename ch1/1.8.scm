@@ -1,0 +1,37 @@
+#lang scheme
+(define (square x) (* x x))
+;using block here
+(define (cube-root x)
+  (define (cube-root-iter guess x)
+    (define new-guess (improve guess x))
+    (if (good-enough? guess new-guess)
+        guess
+        (cube-root-iter new-guess x)))
+  (define (good-enough? old-guess new-guess)
+    (< (abs (/ (- old-guess new-guess)
+               old-guess))
+       0.001))
+  (define (improve y x)
+    (/ (+ (/ x (square y))
+          (* 2 y))
+       3))
+  (cube-root-iter 1.0 x))
+;omit the x in the block
+(define (cube-root1 x)
+  (define (cube-root-iter guess)
+    (define new-guess (improve guess))
+    (if (good-enough? guess new-guess)
+        guess
+        (cube-root-iter new-guess)))
+  (define (good-enough? old-guess new-guess)
+    (< (abs (/ (- old-guess new-guess)
+               old-guess))
+       0.001))
+  (define (improve y)
+    (/ (+ (/ x (square y))
+          (* 2 y))
+       3))
+  (cube-root-iter 1.0))
+;testing
+(cube-root (* 729))
+(cube-root1 (* 729))
