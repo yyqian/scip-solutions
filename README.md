@@ -1,2 +1,3 @@
-# scip-solutions
-SCIP Solutions
+# SICP Solutions
+Language: Scheme
+Book: SICP
