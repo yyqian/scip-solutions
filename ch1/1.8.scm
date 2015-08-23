@@ -1,4 +1,3 @@
-#lang scheme
 (define (square x) (* x x))
 ;using block here
 (define (cube-root x)

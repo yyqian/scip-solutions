@@ -1,4 +1,3 @@
-#lang scheme
 ;helper function
 (define (sum-of-squares x y)
   (+ (* x x)

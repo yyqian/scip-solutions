@@ -1,4 +1,3 @@
-#lang scheme
 ;recursive
 (define (f n)
   (if (< n 3)

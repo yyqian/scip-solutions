@@ -1,4 +1,3 @@
-#lang scheme
 (define (sqrt-iter guess x)
   (if (good-enough? guess (improve guess x))
       guess
