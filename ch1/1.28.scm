@@ -1,0 +1,17 @@
+(define (expmod base exp m)
+  (cond ((= exp 0) 1)
+        ((nontrivial-square-root? base m) 0)
+        ((even? exp) (remainder (square (expmod base (/ exp 2) m)) m))
+        (else (remainder (* base (expmod base (- exp 1) m)) m))))
+
+(define (nontrivial-square-root? x n)
+  (and (not (= x 1))
+       (not (= x (- n 1)))
+       (= (remainder (* x x) n) 1)))
+
+(define (Miller-Rabin-test n)
+  (define (try-it a times)
+    (cond ((<= times 0) #t)
+          ((= (expmod a (- n 1) n) 1) (try-it (+ 1 (random (- n 1))) (- times 1)))
+          (else #f)))
+  (try-it (+ 1 (random (- n 1))) (/ n 2)))

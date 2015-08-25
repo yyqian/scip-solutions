@@ -1,0 +1,10 @@
+;1.27.scm
+(load "1.24.scm")
+(define (congruent? a n)
+  (= (expmod a n n) a))
+(define (test-carmichael n)
+  (define (test-iter cur n)
+    (cond ((>= cur n) #t)
+          ((congruent? cur n) (test-iter (+ cur 1) n))
+          (else #f)))
+  (test-iter 2 n))
