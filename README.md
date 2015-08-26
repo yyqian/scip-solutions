@@ -1,5 +1,5 @@
 # SICP Solutions
 
-Language: Scheme
+My solutions to the exercises in the book **Structure and Interpretation of Computer Programs**.
 
-Book: SICP
+*I'm still working on this and will keep updating this repo.*
