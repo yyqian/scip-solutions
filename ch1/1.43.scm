@@ -1,0 +1,21 @@
+(define (compose f g)
+  (lambda (x)
+    (f (g x))))
+
+(define (even? x)
+  (= (remainder x 2) 0))
+(define (repeated-rec f n)
+  (cond ((= n 1) f)
+        ((even? n) (repeated-rec (compose f f) (/ n 2)))
+        (else (compose f (repeated-rec f (- n 1))))))
+(define (repeated-iter f n)
+  (define (iter i g)
+    (if (>= i n)
+        g
+        (iter (+ i 1) (compose f g))))
+  (iter 1 f))
+
+(newline)
+(display ((repeated-rec square 3) 3))
+(newline)
+(display ((repeated-iter square 3) 3))
