@@ -1,4 +1,4 @@
-(define nil '()) 
+(define nil '())
 (define (reverse l)
   (define (iter l-remained l-reversed)
     (if (null? l-remained)
