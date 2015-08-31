@@ -1,0 +1,10 @@
+(define nil '()) 
+(define (reverse l)
+  (define (iter l-remained l-reversed)
+    (if (null? l-remained)
+        l-reversed
+        (iter (cdr l-remained)
+              (cons (car l-remained)
+                    l-reversed))))
+  (iter l nil))
+(reverse (list 1 4 9 16 25))
