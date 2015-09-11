@@ -12,7 +12,7 @@
   (accumulate append nil (map proc seq)))
 
 
-(define (queens board-size)
+(define (queens0 board-size)
   (define (queen-cols k)
     (if (= k 0)
         (list empty-board)
@@ -24,6 +24,22 @@
                            (adjoin-position new-row k rest-of-queens))
                    (enumerate-interval 1 board-size)))
             (queen-cols (- k 1))))))
+  (trace-entry queen-cols)
+  (queen-cols board-size))
+
+(define (queens1 board-size)
+  (define (queen-cols k)
+    (if (= k 0)
+        (list empty-board)
+        (filter
+          (lambda (positions) (safe? k positions))
+          (flatmap
+            (lambda (new-row)
+              (map (lambda (rest-of-queens)
+                           (adjoin-position new-row k rest-of-queens))
+                   (queen-cols (- k 1))))
+            (enumerate-interval 1 board-size)))))
+  (trace-entry queen-cols)
   (queen-cols board-size))
 
 (define empty-board nil)
@@ -50,49 +66,8 @@
                      (cdr rest-positions))))
     (iter-comp #t (- k 1) (cdr positions))))
 
-;because the queens is in reversed order, we need to do some transition to build the matrix
-(define (reverse items)
-  (if (null? items)
-      nil
-      (append (reverse (cdr items)) (list (car items)))))
-(define (reverse-each-row m)
-  (map reverse m))
-
-(define (accumulate-n op init seqs)
-  (if (null? (car seqs))
-      nil
-      (cons (accumulate op init (map car seqs))
-            (accumulate-n op init (map cdr seqs)))))
-(define (trans m)
-  (accumulate-n cons nil m))
-
-(define (rotate-right m)
-  (reverse-each-row (trans m)))
-
-(define (make-matrix board size)
-  (rotate-right (map (lambda (x)
-                        (map (lambda (y) (if (= x y) 1 0))
-                             (enumerate-interval 1 size)))
-                     board)))
-;plot the matrix
-(define (plot-board board size)
-  (map (lambda (row)
-          (begin (newline)
-                 (map (lambda (x) (if (= x 0) (display "o") (display "x"))) row)))
-       (make-matrix board size)))
-
-(define (count items)
-  (define (iter result rest-items)
-    (if (null? rest-items)
-        result
-        (iter (+ 1 result) (cdr rest-items))))
-  (iter 0 items))
-
-(define (show-queens board-size)
-  (let ((result (queens board-size)))
-    (begin (map (lambda (board) (begin (newline) (plot-board board board-size))) result)
-           (newline)
-           (display "count: ")
-           (display (count result)))))
-
-(show-queens 4)
+(queens1 3)
+;You can check the number of times queen-cols is called. After the enumerate-interval is called, the queen-cols will be called board-size times.
+;If we set the board-szie as 4, we need to call (queen-cols 3) 4 times, (queen-cols 2) 4*4 times, (queen-cols 1) 4*4*4 times, (queen-cols 0) 4*4*4*4 times
+;while the previous method only need to call (queen-cols 3), (queen-cols 2), (queen-cols 1), (queen-cols 0) one time.
+;The queen-cols will be called (1 + n + n^2 + ... + n^n) and (1 + n) times in the two methods respectively.
