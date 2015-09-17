@@ -1,0 +1,26 @@
+(define a (append (t2l (list 1 3 5))
+                  (cons 7 (t2l (list 9 11)))))
+(define a (append (append (1)
+                          (cons 3 (5)))
+                  (cons 7 (append nil
+                                  (cons 9 (11))))))
+(list 1 3 5 7 9 11)
+
+(define a (c2l (list 1 3 5)
+               (cons 7 (c2l (list 9 11) nil))))
+(define a (c2l (list 1 3 5)
+               (cons 7 (c2l nil
+                            (cons 9 (11))))))
+(define a (c2l (list 1 3 5)
+               (cons 7 (cons 9 (11)))))
+(define a (c2l (list 1 3 5)
+               (7 9 11)))
+(define a (c2l (1)
+               (cons 3 (c2l (5) (7 9 11)))))
+(define a (c2l (1)
+               (3 5 7 9 11)))))
+(1 3 5 7 9 11)
+
+; append takes O(n)
+; (a) T(n) = 2*T(n/2) + O(n/2), T(n) = O(n * log n)
+; (b) T(n) = 2*T(n/2) + O(1), T(n) = O(n)
